@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Banco da Etec - Transferência Pix</h1>
+
+    <script>
+        let cpf = [0];
+        let nome = [0];
+        let saldo = [0];
+        let n = 0;
+
+        let inicio = Number(prompt("Escolha a operação: \n [1] - Cadastrar conta \n [2] - Fazer Pix \n [3] - Sair"));
+        while (inicio == 1 || inicio == 2) {
+            switch (inicio) {
+                case 1:
+                    let cpf1 = Number(prompt("Digite o cpf"));
+                    let nome1 = prompt("Digite o seu nome");
+                    let saldo1 = Number(prompt("Digite o saldo"));
+
+                    cadastrarConta(cpf1, nome1, saldo1);
+
+                    break;
+                case 2:
+                    let cpfA = Number(prompt("Digite o CPF de origem"));
+                    let cpfB = Number(prompt("Digite o CPF de destino"));
+                    let valor = Number(prompt("Digite o valor que você deseja transferir"));
+
+                    fazerPix(cpfA, cpfB, valor);
+
+                    break;
+                case 3:
+                    alert("Saiu!");
+                    break;
+                default:
+                    break;
+            }
+            inicio = Number(prompt("Escolha a operação: \n [1] - Cadastrar conta \n [2] - Fazer Pix \n [3] - Sair"));
+        }
+
+        function cadastrarConta(cpf1, nome1, saldo1) {
+            n++;
+            cpf[n] = cpf1;
+            nome[n] = nome1;
+            saldo[n] = saldo1;
+            alert("Cpf: " + cpf[n] + "\nCliente: " + nome[n] + "\nSaldo: " + saldo[n]);
+        }
+
+        function fazerPix(cpfA, cpfB, valor) {
+            let origemIndex = -1;
+            let destinoIndex = -1;
+
+            for (let index = 0; index < cpf.length; index++) {
+                if (cpfA === cpf[index]) {
+                    origemIndex = index;
+                }
+                if (cpfB === cpf[index]) {
+                    destinoIndex = index;
+                }
+            }
+
+            if (origemIndex !== -1 && destinoIndex !== -1) {
+                if (saldo[origemIndex] >= valor) {
+                    saldo[origemIndex] -= valor;
+                    saldo[destinoIndex] += valor;
+
+                    // Saída de dados
+                    alert("Pix de R$ " + valor.toFixed(2) + "\n\nOrigem\nNome: " + nome[origemIndex] + "\nCPF: " + cpf[origemIndex] +
+                        "\nAntes: " + (saldo[origemIndex] + valor).toFixed(2) + "\nDepois: " + saldo[origemIndex].toFixed(2) +
+                        "\n\nDestino\nNome: " + nome[destinoIndex] + "\nCPF: " + cpf[destinoIndex] +
+                        "\nAntes: " + (saldo[destinoIndex] - valor).toFixed(2) + "\nDepois: " + saldo[destinoIndex].toFixed(2));
+
+                    alert("Pix realizado com sucesso!");
+                } else {
+                    alert("Saldo insuficiente na conta de origem.");
+                }
+            } else {
+                alert("Conta de origem ou destino não encontrada.");
+            }
+        }
+    </script>
+</body>
+</html>
